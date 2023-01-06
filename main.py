@@ -202,7 +202,7 @@ with tab4:
     st.header("Lat Lon")
 
     df_amedas = pd.read_excel('./list_amedas_station.xlsx',
-                              sheet_name='Sheet1')
+                              sheet_name='Sheet3')
     df_amedas_show = df_amedas[['Latitude', 'Longtitude']]
 
     df_jma = df[(df['distributor'] == 'jma')]
