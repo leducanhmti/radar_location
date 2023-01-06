@@ -201,6 +201,10 @@ with tab3:
 with tab4:
     st.header("Lat Lon")
 
+    df_amedas = pd.read_excel('./list_amedas_station.xlsx',
+                              sheet_name='Sheet1')
+    df_amedas_show = df_amedas[['Latitude', 'Longtitude']]
+
     df_jma = df[(df['distributor'] == 'jma')]
     df_vil_jma = df_jma[['lat', 'lon']]
     df_vil_jma.dropna(inplace=True)
@@ -250,6 +254,12 @@ with tab4:
         get_polygon='-',
         get_fill_color=[0, 0, 0, 20])
 
+    amedas_layer = pdk.Layer('ScatterplotLayer',
+                             data=df_amedas_show,
+                             get_position='[Longtitude, Latitude]',
+                             get_color='[0, 0, 0, 120]',
+                             get_radius=3000),
+
     jma_layer = pdk.Layer('ScatterplotLayer',
                           data=df_vil_jma,
                           get_position='[lon, lat]',
@@ -276,6 +286,7 @@ with tab4:
     st.write('Red:  DIAS')
     st.write('GREEN: JMA')
     st.write('BLUE: FRICS')
+    st.write('Gray:  Amedas Station')
     st.pydeck_chart(
         pdk.Deck(map_style=None,
                  initial_view_state=pdk.ViewState(
@@ -286,7 +297,7 @@ with tab4:
                  ),
                  layers=[
                      jma_layer, dias_layer, frics_xband_layer,
-                     frics_cband_layer, polygon_layer
+                     frics_cband_layer, polygon_layer, amedas_layer
                  ]))
 
     st.dataframe(df_show)
